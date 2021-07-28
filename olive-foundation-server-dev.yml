@@ -50,4 +50,3 @@ carmel:
   authBaseURL: "http://localhost:7071"
   auth-api: "http://localhost:7071/api/v1/olive-login"
   profilePicUploadPath: /Users/anu/Desktop/temp/profile-pic
-
