@@ -43,10 +43,3 @@ spring:
 logging:
   file:
     name: ./logs/olive-foundation-server.log
-carmel:
-  orgId: "c79ecc86-20b7-44b2-ab70-3db893e37725"
-  client_id: "olive@carmelsolutions"
-  grant_type: "password"
-  authBaseURL: "http://localhost:7071"
-  auth-api: "http://localhost:7071/api/v1/olive-login"
-  profilePicUploadPath: /Users/Anu/Desktop/temp/profile-pic
