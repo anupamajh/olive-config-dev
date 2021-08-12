@@ -1,3 +1,4 @@
+
 server:
   port: 7070
 
@@ -6,10 +7,10 @@ spring:
     name: olive-gateway-server    
   cloud:
     gateway:
-#      discovery:
-#        locator:
-#          enabled: true
-#          lower-case-service-id: true
+      discovery:
+        locator:
+          enabled: true
+          lower-case-service-id: true
       routes:
         - id: do-login
           uri: lb://olive-auth-server
@@ -18,8 +19,26 @@ spring:
             - Method=POST
           filters:
             - RemoveRequestHeader=Cookie
-            - RewritePath=/api/v1.0/doLogin, /oauth/token
-            
+            - RewritePath=/api/v1.0/doLogin, /api/v1/olive-login
+
+        - id: olive-foundation-service
+          uri: lb://olive-foundation-server
+          predicates:
+            - Path=/api/olive/**
+          filters:
+            - RemoveRequestHeader=Cookie
+            - RewritePath=/api/olive/(?<segment>/?.*), /$\{segment}
+
+        - id: olive-foundation-service-resource
+          uri: lb://olive-foundation-server
+          predicates:
+            - Path=/css/**,/js/**,/images/**
+            - Method=GET
+          filters:
+            - RemoveRequestHeader=Cookie
+            - RewritePath=/(?<segment>/?.*), /$\{segment} 
+
+
         - id: refresh-token
           uri: lb://olive-auth-server
           predicates:
@@ -30,17 +49,7 @@ spring:
             - RewritePath=/api/v1.0/refreshToken, /oauth/token
             
             
-        - id: foundation-get-org
-#          uri: 'http://localhost:7072'
-          uri: lb://olive-foundation-server
-          predicates:
-            - Path=/api/org/**
-            - Method=GET
-            - Query=id
-            - Header=Authorization, Bearer (.*)
-          filters:
-            - RemoveRequestHeader=Cookie
-            - RewritePath=/api(?<segment>/?.*), $\{segment}
+
 
 
 #  security:
@@ -56,10 +65,26 @@ spring:
 #    service-url:
 #      defaultZone: http://localhost:7074/eureka/
       
-logging:
+#logging:
 #  level:
-#    root: trace
+#    root: trace    
+
+#spring:
+#  cloud:
+#    gateway:
+#      httpclient:
+#        wiretap: true
+#      httpserver:
+#        wiretap: true
+
+logging:
+  level:
+    reactor:
+      netty: DEBUG
+    org:
+      springframework:
+        cloud:
+          gateway: DEBUG      
   file:
     name: ./logs/olive-gateway-server.log
     
-
