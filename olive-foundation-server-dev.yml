@@ -1,16 +1,9 @@
 server:
-  port: 7072
-
-#eureka:
-#  client:
-#    region: default
-#    registry-fetch-interval-seconds: 5
-#    service-url:
-#      defaultZone: http://localhost:7074/eureka/
+  port: 7073
 
 spring:
   application:
-    name: olive-foundation-server
+    name: crm-server
 
   security:
     oauth2:
@@ -35,11 +28,11 @@ spring:
       naming:
         physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
       ddl-auto: update
-    #show-sql: true
+    show-sql: true
     generate-ddl: true
     database: mysql
     database-platform: org.hibernate.dialect.MySQL5Dialect    
       
 logging:
   file:
-    name: ./logs/olive-foundation-server.log
+    name: ./logs/crm-server.log
